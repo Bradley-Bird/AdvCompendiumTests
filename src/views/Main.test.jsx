@@ -1,4 +1,9 @@
-import { getByRole, render, screen } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 
@@ -10,7 +15,7 @@ describe('Main', () => {
       </>
     );
     //find the loading text
-    screen.findByText(/loading/i);
+    await screen.findByText(/loading/i);
     //find initial list
     const pokeList = await screen.findByRole('list');
     //make sure the list matches the default return amount from api call
@@ -18,12 +23,14 @@ describe('Main', () => {
     //typing search for pikachu
     const search = screen.getByPlaceholderText('Search By Name');
     userEvent.type(search, 'pika');
-    //initiating search with click
+    // //initiating search with click
     const button = screen.getByRole('button', { name: /search/i });
     userEvent.click(button);
+    await screen.findByText(/loading/i);
 
-    const query = await screen.findByText(/pikachu/i);
-
-    expect(query).toBeInTheDocument();
+    return waitFor(() => {
+      const query = screen.getByText(/pikachu/i);
+      expect(query).toBeInTheDocument();
+    });
   });
 });
