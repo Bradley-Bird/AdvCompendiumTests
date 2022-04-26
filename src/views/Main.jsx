@@ -5,11 +5,13 @@ import Input from '../components/Input';
 function Main() {
   const [pokemon, setPokemon] = useState([]);
   const [searchBar, setSearchBar] = useState('');
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       const resp = await fetchPokemon();
       //   console.log(resp);
       setPokemon(resp);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -18,12 +20,16 @@ function Main() {
     const resp = await fetchSearchedPokemon(searchBar);
     setPokemon(resp);
   };
-  return (
+  return loading ? (
+    'loading...'
+  ) : (
     <>
       <Input {...{ searchBar, handleSubmit }} callback={setSearchBar} />
-      {pokemon.map((pokemon) => (
-        <li key={pokemon.id}>{pokemon.pokemon}</li>
-      ))}
+      <ul>
+        {pokemon.map((pokemon) => (
+          <li key={pokemon.id}>{pokemon.pokemon}</li>
+        ))}
+      </ul>
     </>
   );
 }
