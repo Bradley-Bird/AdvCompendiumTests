@@ -7,18 +7,28 @@ function Main() {
   const [searchBar, setSearchBar] = useState('');
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchData = async () => {
-      const resp = await fetchPokemon();
-      //   console.log(resp);
-      setPokemon(resp);
-      setLoading(false);
-    };
-    fetchData();
+    try {
+      const fetchData = async () => {
+        const resp = await fetchPokemon();
+        //   console.log(resp);
+        setPokemon(resp);
+        setLoading(false);
+      };
+      fetchData();
+    } catch {
+      console.error('there has been an error');
+    }
   }, []);
 
   const handleSubmit = async () => {
-    const resp = await fetchSearchedPokemon(searchBar);
-    setPokemon(resp);
+    try {
+      setLoading(true);
+      const resp = await fetchSearchedPokemon(searchBar);
+      setPokemon(resp);
+      setLoading(false);
+    } catch {
+      console.error('Search returned no results, please try again');
+    }
   };
   return loading ? (
     'loading...'
