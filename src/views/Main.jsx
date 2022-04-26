@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { fetchPokemon } from '../services/pokemon';
+import { fetchPokemon, fetchSearchedPokemon } from '../services/pokemon';
 import Input from '../components/Input';
 
 function Main() {
   const [pokemon, setPokemon] = useState([]);
   const [searchBar, setSearchBar] = useState('');
+  const [searched, setSearched] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const resp = await fetchPokemon();
@@ -14,9 +15,13 @@ function Main() {
     fetchData();
   }, []);
 
+  const handleSubmit = async () => {
+    const resp = await fetchSearchedPokemon(searchBar);
+    console.log(resp);
+  };
   return (
     <>
-      <Input {...{ searchBar }} callback={setSearchBar} />
+      <Input {...{ searchBar, handleSubmit }} callback={setSearchBar} />
       {pokemon.map((pokemon) => (
         <li key={pokemon.id}>{pokemon.pokemon}</li>
       ))}
