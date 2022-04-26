@@ -5,7 +5,6 @@ import Input from '../components/Input';
 function Main() {
   const [pokemon, setPokemon] = useState([]);
   const [searchBar, setSearchBar] = useState('');
-  const [searched, setSearched] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const resp = await fetchPokemon();
@@ -17,7 +16,7 @@ function Main() {
 
   const handleSubmit = async () => {
     const resp = await fetchSearchedPokemon(searchBar);
-    console.log(resp);
+    setPokemon(resp);
   };
   return (
     <>
