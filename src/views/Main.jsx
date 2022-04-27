@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchPokemon, fetchSearchedPokemon } from '../services/pokemon';
 import Input from '../components/Input';
+import Pokecard from '../components/Pokecard';
 
 function Main() {
   const [pokemon, setPokemon] = useState([]);
@@ -37,7 +38,7 @@ function Main() {
       <Input {...{ searchBar, handleSubmit }} callback={setSearchBar} />
       <ul>
         {pokemon.map((pokemon) => (
-          <li key={pokemon.id}>{pokemon.pokemon}</li>
+          <Pokecard key={pokemon.id} {...pokemon} />
         ))}
       </ul>
     </>
